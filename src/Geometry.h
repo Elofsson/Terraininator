@@ -6,7 +6,8 @@
 
 #include "BoundingBox.h"
 #include "Material.h"
-#include "ShaderUtils.h"
+#include "utils/ShaderUtils.h"
+#include "utils/Utils.h"
 
 #pragma once
 

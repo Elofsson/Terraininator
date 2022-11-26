@@ -2,8 +2,6 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Utils.h"
-
 Geometry::Geometry()
 {
   m_transform = glm::mat4(1.0f);

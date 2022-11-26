@@ -2,8 +2,8 @@
 #include <string>
 #include <memory>
 #include "Scene.h"
-#include "ObjLoader.h"
-#include "ImageLoader.h"
+#include "loaders/ObjLoader.h"
+#include "loaders/ImageLoader.h"
 #include "Terrain.h"
 
 #pragma once

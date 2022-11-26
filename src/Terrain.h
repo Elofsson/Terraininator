@@ -3,7 +3,7 @@
 
 
 #include "Geometry.h"
-#include "ImageLoader.h"
+#include "loaders/ImageLoader.h"
 
 
 class Terrain : public Geometry 
