@@ -11,21 +11,19 @@ layout(location = 1) out vec3 normal;  // surface normal vector in world space
 uniform mat4 m, v, p;
 
 // Inverse transpose of model matrix for transforming normals
-//uniform mat3 m_3x3_inv_transp;
+uniform mat3 m_3x3_inv_transp;
 
 void main()
 {
-  //mat4 mv = v * m;
+  mat4 mv = v * m;
   //mat4 mv = v;
   //texCoord = vertex.texCoord;
-
-  //position = mv * pos;
-
-  //Pass normals to fragment shader.
-  normal = inNormal;
   
   //Save position for the fragment shader.
-  position = m * pos;
+  position = mv * pos;
   
-  gl_Position = p * v * position;
+  //Pass normals to fragment shader.
+  normal = normalize(m_3x3_inv_transp * inNormal);
+  
+  gl_Position = p * position;
 }

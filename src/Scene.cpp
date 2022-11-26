@@ -5,6 +5,14 @@
 Scene::Scene()
 {
   m_camera = std::shared_ptr<Camera>(new Camera());
+  m_light = std::shared_ptr<Light>(new Light());
+  
+  //Some default light values.
+  m_light->setAmbient(glm::vec4(0.0, 1.0, 0.5, 1.0));
+  m_light->setDiffuse(glm::vec4(0.2, 0.9, 0.9, 1.0));
+  m_light->setSpecular(glm::vec4(0.0, 0.1, 0.1, 1.0));
+  m_light->setPosition(glm::vec4(0.0, 0.0, 0.0, 1.0));
+  
   m_program = -1;
 }
 
@@ -75,6 +83,11 @@ void Scene::setProgram(GLuint program)
   m_program = program;
 }
 
+void Scene::setLight(std::shared_ptr<Light> light)
+{
+  m_light = light;
+}
+
 void Scene::render()
 {
 
@@ -88,6 +101,9 @@ void Scene::render()
 
   //Apply camera.
   m_camera->apply(m_program);
+
+  //Apply light.
+  m_light->apply(m_program);
 
   //Render all the geometry here.
   for(auto geometry : m_geometries)

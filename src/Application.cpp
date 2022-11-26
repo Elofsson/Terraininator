@@ -68,6 +68,14 @@ bool Application::initView()
   camera->setSceneScale(0.01f * radius);
   camera->setFov(90);
 
+  //Set light in the middle of the current scene.
+  std::shared_ptr<Light> newLight = std::shared_ptr<Light>(new Light());
+  newLight->setAmbient(glm::vec4(0.0, 1.0, 0.5, 1.0));
+  newLight->setDiffuse(glm::vec4(0.2, 0.9, 0.9, 1.0));
+  newLight->setSpecular(glm::vec4(0.5, 0.5, 0.5, 1.0));
+  newLight->setPosition(glm::vec4(box.getCenter() + distance, 1.0));
+  m_scene->setLight(newLight);
+
   return true;
 }
 

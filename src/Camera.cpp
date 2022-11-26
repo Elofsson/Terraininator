@@ -132,12 +132,12 @@ bool Camera::init(GLuint program)
     return false;
   }
 
-  /*uniform_name = "v_inv";
+  uniform_name = "v_inv";
   m_uniform_v_inv = glGetUniformLocation(program, uniform_name);
   if (m_uniform_v_inv == -1) {
-    //std::cerr << "Could not bind uniform " << uniform_name << std::endl;
-    //return false;
-  }*/
+    std::cerr << "Could not bind uniform " << uniform_name << std::endl;
+    return false;
+  }
 
   return true;
 }
@@ -152,8 +152,8 @@ void Camera::apply(GLuint program)
 
   glUniformMatrix4fv(m_uniform_v, 1, GL_FALSE, glm::value_ptr(view));
   glUniformMatrix4fv(m_uniform_p, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-  //glm::mat4 v_inv = glm::inverse(view);
-  //glUniformMatrix4fv(m_uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
+  glm::mat4 v_inv = glm::inverse(view);
+  glUniformMatrix4fv(m_uniform_v_inv, 1, GL_FALSE, glm::value_ptr(v_inv));
 }
 
 void Camera::setNearFar(const glm::vec2& nearFar)

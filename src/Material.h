@@ -43,6 +43,7 @@ private:
   GLint m_locAmbient;
   GLint m_locDiffuse;
   GLint m_locSpecular;
+  GLint m_locShininess;
 
 };
 

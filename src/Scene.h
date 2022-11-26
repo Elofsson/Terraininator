@@ -4,6 +4,7 @@
 
 #include "Geometry.h"
 #include "Camera.h"
+#include "Light.h"
 
 #pragma once
 
@@ -17,6 +18,7 @@ public:
   BoundingBox calculateBoundingBox();
   std::shared_ptr<Camera> getCamera();
   void setProgram(GLuint program);
+  void setLight(std::shared_ptr<Light> light);
   bool init();
 
   //Add light.
@@ -29,4 +31,5 @@ private:
   
   std::vector<std::shared_ptr<Geometry>> m_geometries;
   std::shared_ptr<Camera> m_camera;
+  std::shared_ptr<Light> m_light;
 };

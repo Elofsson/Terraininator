@@ -10,7 +10,7 @@ Geometry::Geometry()
   m_verticesLoc = -1;
   m_normalsLoc = -1;
   m_vboNormals = -1;
-  m_material = nullptr;
+  m_material = std::shared_ptr<Material>(new Material());
 }
 
 void Geometry::draw()
@@ -195,12 +195,13 @@ bool Geometry::initShader(GLuint program)
   shaderutils::glCheckError();
 
 	//Get the location for normal matrix.
-	/*uniform_name = "m_3x3_inv_transp";
+	uniform_name = "m_3x3_inv_transp";
 	m_inverseModelMatrixLoc = glGetUniformLocation(program, uniform_name);
 	if (m_inverseModelMatrixLoc == -1) {
 		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
     return false;
-	}*/
+	}
+  shaderutils::glCheckError();
 
   const char* attribute_name;
   attribute_name = "pos";
@@ -232,6 +233,11 @@ bool Geometry::initShader(GLuint program)
 void Geometry::apply()
 {
   glUniformMatrix4fv(m_modelMatrixLoc, 1, GL_FALSE, glm::value_ptr(m_transform));
+
+  /* Transform normal vectors with transpose of inverse of upper left
+	3x3 model matrix (ex-gl_NormalMatrix): */
+  glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(m_transform)));
+	glUniformMatrix3fv(m_inverseModelMatrixLoc, 1, GL_FALSE, glm::value_ptr(m_3x3_inv_transp));
   
   if(m_material)
   {

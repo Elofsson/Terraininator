@@ -46,8 +46,8 @@ void Material::setShininess(float s)  { m_shininess = s; }
 
 bool Material::init(GLuint program)
 { 
-  //TODO maybe add shininess.
-  //loc = glGetUniformLocation(program, "material.shininess");
+  m_locShininess = glGetUniformLocation(program, "material.shininess");
+  
   bool allMatsOk = true;
   m_locAmbient = glGetUniformLocation(program, "material.ambient");
   if(m_locAmbient < 0)
@@ -90,6 +90,5 @@ void Material::apply()
     glUniform4fv(m_locDiffuse, 1, glm::value_ptr(m_diffuse));
   }
   
-  //TODO maybe add shininess?
-  //glUniform1f(loc, m_shininess);
+  glUniform1f(m_locShininess, m_shininess);
 }
