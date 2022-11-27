@@ -3,18 +3,27 @@
 
 Terrain::Terrain()
 {
+  m_material = std::shared_ptr<Material>(new Material());
+  m_material->setShininess(250.0f);
 }
 
 void Terrain::draw()
 { 
-  std::cout << "Draw terrain " << std::endl; 
+  //std::cout << "Draw terrain " << std::endl; 
 
   // draw mesh
   glBindVertexArray(m_vao);
 
   //Enables attributes.
   if(m_verticesLoc != -1)
+  {
     glEnableVertexAttribArray(m_verticesLoc);
+  }
+  
+  if(m_normalsLoc != -1)
+  {
+    glEnableVertexAttribArray(m_normalsLoc);
+  }
 
   // render the mesh triangle strip by triangle strip - each row at a time
   for(unsigned int strip = 0; strip < m_numStrips; ++strip)
@@ -29,7 +38,14 @@ void Terrain::draw()
 
   //Release resources.
   if(m_verticesLoc != -1)
+  {
+    glEnableVertexAttribArray(0); 
+  }
+
+  if(m_normalsLoc != -1)
+  {
     glEnableVertexAttribArray(0);
+  }
 }
 
 bool Terrain::loadTerrain(std::string heightMapFilePath)
@@ -78,6 +94,29 @@ bool Terrain::loadTerrain(std::string heightMapFilePath)
         addIndex(j + imageData->width * (i + k));
       }
     }
+  }
+
+  //Generate face normals.
+  m_normals = std::vector<glm::vec3>(m_indices.size());
+  for(unsigned int i = 0; i < m_indices.size(); i += 3)
+  {
+    const int vertexIndex = m_indices[i];
+    //Get three vertices that constructs a face.
+    const glm::vec3 v1 = glm::vec3(m_vertices[vertexIndex]);
+    const glm::vec3 v2 = glm::vec3(m_vertices[vertexIndex + 1]);
+    const glm::vec3 v3 = glm::vec3(m_vertices[vertexIndex + 2]);
+
+    //Compute edges.
+    const glm::vec3 edge1 = v1 - v2;
+    const glm::vec3 edge2 = v3 - v2;
+
+    //Calculate normal
+    const glm::vec3 normal = glm::cross(edge1, edge2);
+
+    //Save normals
+    m_normals[i] += normal;
+    m_normals[i + 1] += normal;
+    m_normals[i + 2] += normal;
   }
 
   m_numStrips = imageData->height - 1;

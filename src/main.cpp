@@ -123,8 +123,6 @@ int main(int argc, char **argv)
     return -1;
   }
 
-  
-  std::string defaultObj = "res/cube/RubixCube.obj";
   std::string scube = "res/simpleBoxV3.obj";
   if(!app->addGeometry(scube))
   {
@@ -134,7 +132,7 @@ int main(int argc, char **argv)
 
   std::string capybaraFilePath = "res/capybara_2_high_res.jpg";
   std::string heightMapFilePath = "res/iceland_heightmap.png";
-  //app->loadTerrain(heightMapFilePath);
+  app->loadTerrain(heightMapFilePath);
 
   if(!app->initView())
   {
